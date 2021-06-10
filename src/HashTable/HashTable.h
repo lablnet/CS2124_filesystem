@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include "HashUtility.h"
-#include "../vendor/VariadicTable.h"
+#include "../vendor/VariadicTable/VariadicTable.h"
 
 #define MIN_HASH_BUCKET 8
 
