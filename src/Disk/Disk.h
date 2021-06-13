@@ -19,7 +19,7 @@ namespace lablnet {
         FileType type;
         std::string name;
         std::string last_mod;
-        long long size; // in bits.
+        long long size; // in bytes.
 
     };
 
@@ -29,7 +29,8 @@ namespace lablnet {
     public:
         void copy(std::string from, std::string to) {
             std::filesystem::copy(from, to);
-
+            // get file/folder name and size.
+            // and other meta too.
         }
 
         void move() {
