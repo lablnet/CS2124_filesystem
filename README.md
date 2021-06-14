@@ -1,5 +1,6 @@
 # CS2124_filesystem
 **CS2124 semester project**
+
 The simulation of the file system aimed to understand the basics of how hash tables of
 file systems work. There are many file systems like NTFS, EFI etc. But in this project we
 build a (virtual) file system that will be simple enough. C++ will be used as reference
@@ -17,6 +18,7 @@ languages.
 4. Merge the files and folder into one file so to called img file to behave as virtual file
    system (Optional)
 5. GUI using QT C++ (Optional)
+
 **There are two requirements options: if time is left and I found time then I will try my best to
    implement those as well.**
    
