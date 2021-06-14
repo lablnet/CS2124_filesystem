@@ -16,10 +16,13 @@ namespace lablnet {
 
     class FileMeta {
     public:
-        FileType type;
+        FileType type = FILE;
         std::string name;
         std::string last_mod;
         long long size; // in bytes.
+        std::string mime;
+        std::string extension;
+
 
     };
 
