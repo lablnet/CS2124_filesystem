@@ -5,7 +5,38 @@
 #ifndef ALPHAFILESYSTEM_UTILITY_H
 #define ALPHAFILESYSTEM_UTILITY_H
 
+#include <string>
+#include <vector>
+
 namespace lablnet {
+    std::vector<std::string> split_string(std::string str, char delim = ' ')
+    {
+        std::vector<std::string> tokens;
+        std::string temp;
+        for(int i = 0; i < str.length(); i++){
+            if (str[i] == delim) {
+                tokens.push_back(temp);
+                temp = "";
+            } else {
+                temp.push_back(str[i]);
+            }
+        }
+        tokens.push_back(temp);
+        return tokens;
+    }
+
+    std::string get_file_ext(std::string path)
+    {
+        std::string tokens = lablnet::split_string(path, '.');
+        return tokens[tokens.size() - 1];
+    }
+
+    std::string get_path_name(std::string path)
+    {
+        std::string tokens = lablnet::split_string(path, '/');
+        return tokens[tokens.size() - 1];
+    }
+
     long long int get_size(std::string path)
     {
         long long result = -1;
