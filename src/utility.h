@@ -25,15 +25,23 @@ namespace lablnet {
         return tokens;
     }
 
+    std::string get_file_name(std::string path)
+    {
+        std::vector<std::string> tokens = split_string(path, '.');
+        std::string name = tokens[tokens.size() - 2];
+        std::vector<std::string> tokens2 = split_string(name, '/');
+        return tokens2[tokens.size() - 1];
+    }
+
     std::string get_file_ext(std::string path)
     {
-        std::string tokens = lablnet::split_string(path, '.');
+        std::vector<std::string>  tokens = split_string(path, '.');
         return tokens[tokens.size() - 1];
     }
 
     std::string get_path_name(std::string path)
     {
-        std::string tokens = lablnet::split_string(path, '/');
+        std::vector<std::string>  tokens = split_string(path, '/');
         return tokens[tokens.size() - 1];
     }
 
