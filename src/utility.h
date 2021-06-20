@@ -5,10 +5,27 @@
 #ifndef ALPHAFILESYSTEM_UTILITY_H
 #define ALPHAFILESYSTEM_UTILITY_H
 
+#include <sys/stat.h>
 #include <string>
 #include <vector>
 
 namespace lablnet {
+
+    enum FileType {
+        FOLDER, _FILE, NONE
+    };
+
+    FileType get_type(std::string path)
+    {
+        struct stat s;
+        if (stat(path.c_str(), &s) == 0)
+        {
+            if (s.st_mode & S_IFDIR) return FOLDER;
+            else if (s.st_mode & S_IFREG) return _FILE;
+        }
+        return NONE;
+    }
+
     std::vector<std::string> split_string(std::string str, char delim = ' ')
     {
         std::vector<std::string> tokens;

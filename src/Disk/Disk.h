@@ -5,18 +5,16 @@
 #ifndef ALPHAFILESYSTEM_DISK_H
 #define ALPHAFILESYSTEM_DISK_H
 
+#include "../utility.h"
 #include "../HashTable/HashTable.cpp"
 #include <filesystem>
 #include <string>
 
 namespace lablnet {
-    enum FileType {
-        FOLDER, FILE
-    };
 
     class FileMeta {
     public:
-        FileType type = FILE;
+        lablnet::FileType type = lablnet::NONE;
         std::string name;
         std::string last_mod;
         long long size; // in bytes.
@@ -29,6 +27,7 @@ namespace lablnet {
     class Disk {
     private:
         HashTable<std::string, FileMeta> table;
+        struct stat s;
     public:
         void copy(std::string from, std::string to) {
             std::filesystem::copy(from, to);
