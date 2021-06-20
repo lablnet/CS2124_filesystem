@@ -85,7 +85,10 @@ namespace lablnet {
     }
 
     std::string get_last_modified(std::string path) {
-        return lablnet::run_command("date -r " + path);
+        std::string last_mod = lablnet::run_command("date -r " + path);
+        std::string::iterator end_pos = std::remove(last_mod.begin(), last_mod.end(), '\n');
+        last_mod.erase(end_pos, last_mod.end());
+        return last_mod;
     }
 }
 

@@ -12,12 +12,12 @@
 #include <string>
 
 // utility function for MSVC++
-template<class T>
-std::string toString(const T &value) {
-    std::ostringstream os;
-    os << value;
-    return os.str();
-}
+//template<class T>
+//std::string toString(const T &value) {
+//    std::ostringstream os;
+//    os << value;
+//    return os.str();
+//}
 
 namespace lablnet {
 
@@ -65,9 +65,9 @@ namespace lablnet {
     template <typename T>
     inline int hash_string(T key, long capacity) {
         int hash = 0;
-        std::string sKey = std::to_string(key);
-
-        for (int i = 0; i < 5; i++) {
+        //std::string sKey = std::to_string(key);
+        std::string sKey = key;
+        for (int i = 0; i < sKey.length(); i++) {
             hash = (256 * hash + sKey[i]) % capacity;
         }
         return hash;

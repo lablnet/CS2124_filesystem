@@ -39,11 +39,12 @@ void HashTable<K, V>::rebuild(long long old_capacity, long long new_capacity) {
 
 template<typename K, typename V>
 int HashTable<K, V>::get_key(K key) {
-    if (lablnet::get_type(key) == "string") {
-        return lablnet::hash_string(key, this->capacity);
-    }
+//    if (lablnet::get_type(key) == "string") {
+//        return lablnet::hash_string(key, this->capacity);
+//    }
 
-    return static_cast<int>(key);
+    //return static_cast<int>(key);
+    return lablnet::hash_string(key, this->capacity);
 }
 
 template <typename K, typename V>

@@ -70,7 +70,7 @@ public:
      * @since 1.0.0
      */
     HashTable() {
-        this->table = (TableItems<K, V>*)malloc(this->capacity * sizeof(TableItems<K, V>));
+        this->table = new TableItems<K, V>[capacity];
         this->PRIME = lablnet::findLeastPrime(this->capacity);
         for (int i = 0; i< this->capacity; i++) {
             this->table[i] = TableItems<K, V>();

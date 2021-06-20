@@ -25,7 +25,7 @@ namespace lablnet {
 
     class Disk {
     private:
-        HashTable<std::string, lablnet::FileMeta> table;
+            HashTable<std::string, lablnet::FileMeta> table;
     public:
 
         void copy(std::string from, std::string to) {
@@ -63,7 +63,16 @@ namespace lablnet {
 
         void printDiskTable()
         {
+            int size = this->table.capacity;
+            VariadicTable<int, std::string, int, std::string> vt({"hash", "filename", "size", "last_mod"});
 
+            for (int i = 0; i < size; i++) {
+                if (this->table.table[i].hash != -1)
+                    vt.addRow(this->table.table[i].hash, this->table.table[i].value.name, this->table.table[i].value.size, this->table.table[i].value.last_mod);
+            }
+
+            vt.print(std::cout);
+            std::cout << std::endl;
         }
 
         void getInfo() {
