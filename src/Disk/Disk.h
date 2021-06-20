@@ -24,9 +24,9 @@ namespace lablnet {
     };
 
     class Disk {
-    private:
-            HashTable<std::string, lablnet::FileMeta> table;
     public:
+            HashTable<std::string, lablnet::FileMeta> table;
+            std::vector<std::string> paths;
 
         void copy(std::string from, std::string to) {
             lablnet::FileType type = lablnet::get_type(from);
@@ -45,6 +45,8 @@ namespace lablnet {
                     meta->extension = lablnet::get_file_ext(from);
                     meta->mime = MimeTypes::get(meta->extension);
                 }
+
+                this->paths.push_back(from);
                this->table.insert(filename, *meta);
             }
         }
@@ -61,7 +63,7 @@ namespace lablnet {
             }
         }
 
-        void printDiskTable()
+        void printDiskTable() const
         {
             int size = this->table.capacity;
             VariadicTable<int, std::string, int, std::string> vt({"hash", "filename", "size", "last_mod"});
@@ -83,6 +85,33 @@ namespace lablnet {
             // todo
         }
     };
+
+    void serialize_object(Disk d){
+        std::ofstream file;
+        file.open("./data.txt",std::ios::out);
+        if(file) {
+            std::string data;
+            for (int i = 0; i <= d.paths.size(); i++) {
+                data = data + d.paths[i] + "\n";
+            }
+            file << data;
+            file.close();
+        }
+    }
+
+    Disk deserialize_object(){
+        Disk d;
+        std::ifstream file;
+        file.open("./data.txt", std::ios::in);
+        if(file) {
+            std::string data;
+            while (std::getline (file, data)) {
+                d.copy(data, data);
+            }
+            file.close();
+        }
+        return d;
+    }
 }
 
 #endif //ALPHAFILESYSTEM_DISK_H

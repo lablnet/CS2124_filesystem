@@ -24,3 +24,5 @@ lib
 *.cmke
 .hash
 AlphaFileSystem
+*.out
+data.txt

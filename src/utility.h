@@ -8,12 +8,14 @@
 #include <sys/stat.h>
 #include <string>
 #include <vector>
+#include <fstream>
 
 namespace lablnet {
 
     enum FileType {
         FOLDER, _FILE, NONE
     };
+
 
     FileType get_type(std::string path)
     {
