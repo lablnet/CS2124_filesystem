@@ -25,4 +25,4 @@ lib
 .hash
 AlphaFileSystem
 *.out
-data.txt
+*.txt

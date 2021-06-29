@@ -9,6 +9,9 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <algorithm>
+#include <cmath>
+
 
 namespace lablnet {
 
@@ -49,7 +52,7 @@ namespace lablnet {
         std::vector<std::string> tokens = lablnet::split_string(path, '.');
         std::string name = tokens[tokens.size() - 2];
         std::vector<std::string> tokens2 = lablnet::split_string(name, '/');
-        return tokens2[tokens.size() - 1];
+        return tokens2[tokens.size() - 2];
     }
 
     std::string get_file_ext(std::string path)
@@ -86,11 +89,30 @@ namespace lablnet {
         return std::stoll(lablnet::run_command("du -sb " + path + " | cut -f1"));
     }
 
+    std::string trim(std::string str)
+    {
+        std::string::iterator end_pos = std::remove(str.begin(), str.end(), '\n');
+        str.erase(end_pos, str.end());
+        return str;
+
+    }
     std::string get_last_modified(std::string path) {
         std::string last_mod = lablnet::run_command("date -r " + path);
-        std::string::iterator end_pos = std::remove(last_mod.begin(), last_mod.end(), '\n');
-        last_mod.erase(end_pos, last_mod.end());
-        return last_mod;
+        return lablnet::trim(last_mod);
+    }
+
+    std::string bytes_to_human_readable(long long int bytes)
+    {
+        std::vector<std::string> suffix = {"B", "KB", "MB", "GB", "TB", "PB"};
+        int i = 0;
+        double d_btyes = bytes;
+        if (bytes > 1024) {
+            for (i = 0; (bytes / 1024) > 0 && i<suffix.size()-1; i++, bytes /= 1024)
+                d_btyes = bytes / 1024.0;
+        }
+
+        d_btyes = std::ceil(d_btyes * 100.0) / 100.0;
+        return std::to_string(d_btyes) + " " + suffix[i];
     }
 }
 

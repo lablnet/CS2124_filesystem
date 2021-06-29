@@ -28,11 +28,17 @@ namespace lablnet {
             HashTable<std::string, lablnet::FileMeta> table;
             std::vector<std::string> paths;
 
-        void copy(std::string from, std::string to) {
+        void copy(const std::string& from, const std::string& to = "./temp/") {
             lablnet::FileType type = lablnet::get_type(from);
             if (type != lablnet::NONE) {
                 // std::filesystem::copy(from, to);
-                std::string filename = lablnet::get_path_name(from);
+                std::string filename;
+
+                if (type == FOLDER)
+                    filename = lablnet::get_path_name(from);
+                else
+                    filename = lablnet::get_file_name(from);
+
                 long long int size = lablnet::get_size(from);
                 std::string ext = lablnet::get_file_ext(from);
                 std::string last_mod = lablnet::get_last_modified(from);
@@ -46,31 +52,78 @@ namespace lablnet {
                     meta->mime = MimeTypes::get(meta->extension);
                 }
 
-                this->paths.push_back(from);
+               this->paths.push_back(from);
                this->table.insert(filename, *meta);
+
+               return;
             }
+            std::cout << "\nUnable to copy, no such file or directory\n";
         }
 
-        void move() {
-            // todo
+        void move(const std::string& from, const std::string& to = "./temp/") {
+            this->copy(from , to);
         }
 
         void remove(std::string path) {
             lablnet::FileType type = lablnet::get_type(path);
             if (type != lablnet::NONE) {
-                std::string filename = lablnet::get_file_name(path);
+                std::string filename;
+
+                if (type == FOLDER)
+                    filename = lablnet::get_path_name(path);
+                else
+                    filename = lablnet::get_file_name(path);
                 this->table.erase(filename);
+                this->paths.erase(std::remove(paths.begin(), paths.end(), path), paths.end());
             }
         }
 
-        void printDiskTable() const
+        void search(std::string path) {
+            lablnet::FileType type = lablnet::get_type(path);
+            if (type != lablnet::NONE) {
+                std::string filename;
+
+                if (type == FOLDER)
+                    filename = lablnet::get_path_name(path);
+                else
+                    filename = lablnet::get_file_name(path);
+
+                int hash = this->table.getHash(filename);
+                if (hash != -1) {
+                    auto temp = this->table.table[hash];
+                    std::string type;
+                    if (temp.value.type == lablnet::_FILE)
+                        type = "FILE";
+                    else
+                        type = "DIR";
+                    VariadicTable<int, std::string, std::string, std::string, std::string, std::string, std::string> vt({"hash", "filename", "size", "last_mod", "mime", "extension", "type"});
+                    vt.addRow(temp.hash, temp.value.name, lablnet::bytes_to_human_readable(temp.value.size), temp.value.last_mod, temp.value.mime, temp.value.extension, type);
+                    vt.print(std::cout);
+                    std::cout << std::endl;
+                    return;
+                }
+            }
+            std::cout << "\nSorry, no such file or directory!\n";
+        }
+
+        void showTable() const
         {
             int size = this->table.capacity;
-            VariadicTable<int, std::string, int, std::string> vt({"hash", "filename", "size", "last_mod"});
+            VariadicTable<int, std::string, std::string, std::string, std::string, std::string, std::string> vt({"hash", "filename", "size", "last_mod", "mime", "extension", "type"});
 
             for (int i = 0; i < size; i++) {
-                if (this->table.table[i].hash != -1)
-                    vt.addRow(this->table.table[i].hash, this->table.table[i].value.name, this->table.table[i].value.size, this->table.table[i].value.last_mod);
+                if (this->table.table[i].hash != -1) {
+                    auto temp = this->table.table[i].value;
+                    std::string type;
+                    if (temp.type == lablnet::_FILE)
+                        type = "FILE";
+                    else
+                        type = "DIR";
+
+                    vt.addRow(this->table.table[i].hash, temp.name,
+                              lablnet::bytes_to_human_readable(temp.size),
+                              temp.last_mod, temp.mime, temp.extension, type);
+                }
             }
 
             vt.print(std::cout);
@@ -80,16 +133,13 @@ namespace lablnet {
         void getInfo() {
             // todo
         }
-
-        void showTable() {
-            // todo
-        }
     };
 
     void serialize_object(Disk d){
+        std::filesystem::remove("./data.txt");
         std::ofstream file;
         file.open("./data.txt",std::ios::out);
-        if(file) {
+        if(file && !d.paths.empty()) {
             std::string data;
             for (int i = 0; i <= d.paths.size(); i++) {
                 data = data + d.paths[i] + "\n";
