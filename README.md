@@ -6,6 +6,24 @@ file systems work. There are many file systems like NTFS, EFI etc. But in this p
 build a (virtual) file system that will be simple enough. C++ will be used as reference
 languages.
 
+### Installations
+Clone this repo
+```sh
+git clone https://github.com/lablnet/CS2124_filesystem.git
+```
+Build it
+```sh
+cmake .
+```
+```sh
+make
+```
+
+Run
+```sh
+./AlphaFileSystem
+```
+
 ## Goal
 - To understand how file systems work underneath the hood.
 - Understand Applications of Hash table and other data structure and algorithm.
