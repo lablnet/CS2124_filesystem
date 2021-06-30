@@ -13,6 +13,25 @@ Clone this repo
 ```sh
 git clone https://github.com/lablnet/CS2124_filesystem.git
 ```
+This project work with every c++ compilers in Linux and MacOs:
+1. Cmake
+2. GNU G++
+3. Clang
+
+#### Build on GNU G++
+
+```sh
+g++ --std=c++17 main.cpp -lstdc++fs && ./a.out
+```
+
+#### Build on Clang
+
+```sh 
+clang++ --std=c++17 main.cpp -lstdc++fs && ./a.out
+```
+
+#### Build on Cmake
+
 Build it
 ```sh
 cmake .

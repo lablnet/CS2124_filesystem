@@ -8,8 +8,17 @@
 #include "../utility.h"
 #include "../HashTable/HashTable.cpp"
 #include "../Mime/Mime.h"
-#include <filesystem>
 #include <string>
+
+#if __has_include(<filesystem>)
+#include <filesystem>
+  namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+  namespace fs = std::experimental::filesystem;
+#else
+  error "Missing the <filesystem> header."
+#endif
 
 namespace lablnet {
 
@@ -31,7 +40,7 @@ namespace lablnet {
         void copy(const std::string& from, const std::string& to = "./temp/") {
             lablnet::FileType type = lablnet::get_type(from);
             if (type != lablnet::NONE) {
-                // std::filesystem::copy(from, to);
+                // fs::copy(from, to);
                 std::string filename;
 
                 if (type == FOLDER)
@@ -136,7 +145,7 @@ namespace lablnet {
     };
 
     void serialize_object(Disk d){
-        std::filesystem::remove("./data.txt");
+        fs::remove("./data.txt");
         std::ofstream file;
         file.open("./data.txt",std::ios::out);
         if(file && !d.paths.empty()) {

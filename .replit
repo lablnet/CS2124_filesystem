@@ -1,0 +1,2 @@
+language = "cpp"
+run="g++ --std=c++17 main.cpp -lstdc++fs && ./a.out"
