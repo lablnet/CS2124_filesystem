@@ -141,7 +141,7 @@ namespace lablnet {
         file.open("./data.txt",std::ios::out);
         if(file && !d.paths.empty()) {
             std::string data;
-            for (int i = 0; i <= d.paths.size(); i++) {
+            for (int i = 0; i < d.paths.size(); i++) {
                 data = data + d.paths[i] + "\n";
             }
             file << data;
